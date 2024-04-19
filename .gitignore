@@ -1,2 +1,3 @@
 # Ignore the uploads folder
+/uploads/*
 /instance/videos.db
