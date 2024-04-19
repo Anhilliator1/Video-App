@@ -17,19 +17,8 @@ class Video(db.Model):
 def index():
     return render_template('index.html')
 
-@app.route('/upload', methods=['POST'])
 def upload():
-    file = request.files['video']
-    title = request.form['title']
-    if file:
-        filename = secure_filename(file.filename)
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
-        video = Video(title=title, filename=filename)
-        db.session.add(video)
-        db.session.commit()
-        return jsonify({"success": True, "message": "Video uploaded successfully.", "video_id": video.id})
-    return jsonify({"success": False, "message": "Failed to upload video."})
+    return render_template('upload.html')
 
 @app.route('/play/<int:video_id>')
 def play(video_id):
@@ -44,6 +33,12 @@ def video(video_id):
     if video:
         return send_from_directory(app.config['UPLOAD_FOLDER'], video.filename)
     return 'Video not found', 404
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '')
+    videos = Video.query.filter(Video.title.ilike(f'%{query}%')).all()
+    return render_template('search_results.html', videos=videos)
 
 if __name__ == '__main__':
     with app.app_context():
