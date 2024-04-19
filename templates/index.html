@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Upload</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Upload Video</h1>
+    <form id="uploadForm">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="file" name="video" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <script>
+    $(document).ready(function () {
+        $('#uploadForm').submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                url: '/upload',
+                type: 'POST',
+                data: formData,
+                success: function (data) {
+                    alert(data.message);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+    });
+    </script>
+</body>
+</html>
