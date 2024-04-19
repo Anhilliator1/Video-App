@@ -15,23 +15,25 @@
     </form>
 
     <script>
-    $(document).ready(function () {
-        $('#uploadForm').submit(function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                url: '/upload',
-                type: 'POST',
-                data: formData,
-                success: function (data) {
-                    alert(data.message);
-                },
-                cache: false,
-                contentType: false,
-                processData: false
+        $(document).ready(function () {
+            $('#uploadForm').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    success: function (data) {
+                        alert(data.message);
+                        window.location.href = '/play/' + data.video_id; // Redirect to playback page
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
             });
         });
-    });
-    </script>
+        </script>
+        
 </body>
 </html>

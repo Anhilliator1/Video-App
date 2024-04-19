@@ -37,6 +37,13 @@ def video(video_id):
         return send_from_directory(app.config['UPLOAD_FOLDER'], video.filename)
     return 'Video not found', 404
 
+@app.route('/play/<int:video_id>')
+def play(video_id):
+    video = Video.query.get(video_id)
+    if video:
+        return render_template('play.html', video=video)
+    return 'Video not found', 404
+
 if __name__ == '__main__':
     db.create_all()
     app.run(debug=True)
