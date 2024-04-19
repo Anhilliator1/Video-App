@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.utils import secure_filename
 import os
 
 app = Flask(__name__)
@@ -27,15 +28,8 @@ def upload():
         video = Video(title=title, filename=filename)
         db.session.add(video)
         db.session.commit()
-        return jsonify({"success": True, "message": "Video uploaded successfully."})
+        return jsonify({"success": True, "message": "Video uploaded successfully.", "video_id": video.id})
     return jsonify({"success": False, "message": "Failed to upload video."})
-
-@app.route('/videos/<int:video_id>')
-def video(video_id):
-    video = Video.query.get(video_id)
-    if video:
-        return send_from_directory(app.config['UPLOAD_FOLDER'], video.filename)
-    return 'Video not found', 404
 
 @app.route('/play/<int:video_id>')
 def play(video_id):
@@ -44,6 +38,14 @@ def play(video_id):
         return render_template('play.html', video=video)
     return 'Video not found', 404
 
+@app.route('/videos/<int:video_id>')
+def video(video_id):
+    video = Video.query.get(video_id)
+    if video:
+        return send_from_directory(app.config['UPLOAD_FOLDER'], video.filename)
+    return 'Video not found', 404
+
 if __name__ == '__main__':
-    db.create_all()
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
