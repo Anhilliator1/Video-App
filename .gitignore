@@ -1,0 +1,5 @@
+# Ignore the uploads folder
+/uploads/
+
+# Ignore the instance directory and its contents
+/instance/videos.db
