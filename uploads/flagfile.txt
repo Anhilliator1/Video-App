@@ -1,0 +1,1 @@
+This file serves no other purpose than to get Git to recognize this directory.
