@@ -3,13 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video App</title>
+    <title>Upload Video</title>
 </head>
 <body>
-    <h1>Welcome to the Video App</h1>
-    <div>
-        <a href="/search">Search Videos</a>
-        <a href="/upload">Upload Video</a>
-    </div>
+    <h1>Upload Video</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Title" required>
+        <input type="file" name="video" required>
+        <button type="submit">Upload</button>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#uploadForm').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '/upload',
+                    type: 'POST',
+                    data: formData,
+                    success: function (data) {
+                        alert(data.message);
+                        window.location.href = '/play/' + data.video_id; // Redirect to playback page
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+        });
+    </script>
 </body>
 </html>
