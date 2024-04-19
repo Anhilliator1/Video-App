@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Video</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 </head>
 <body>
     <h1>Upload Video</h1>
@@ -15,8 +16,15 @@
     </form>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).ready(function () {
+            // Set global options for Toastr
+            toastr.options = {
+                positionClass: 'toast-center', // Set position to center
+                closeButton: true, // Show close button
+            };
+    
             $('#uploadForm').submit(function (e) {
                 e.preventDefault();
                 if ($('#titleInput').val().trim() === '') {
@@ -29,8 +37,13 @@
                     type: 'POST',
                     data: formData,
                     success: function (data) {
-                        alert(data.message);
-                        window.location.href = '/play/' + data.video_id; // Redirect to playback page
+                        toastr.success('Uploaded Successfully');
+                        setTimeout(function () {
+                            window.location.href = '/';
+                        }, 1000);
+                    },
+                    error: function () {
+                        toastr.error('Failed to upload video');
                     },
                     cache: false,
                     contentType: false,
@@ -39,5 +52,6 @@
             });
         });
     </script>
+    
 </body>
 </html>

@@ -40,14 +40,11 @@ def upload():
             db.session.add(video)
             db.session.commit()
 
-            # Redirect to the playback page with the generated video ID
-            return redirect(url_for('play', video_id=video_id))
-
     return render_template('upload.html')
 
-@app.route('/play/<int:video_id>')
+@app.route('/play/<video_id>')
 def play(video_id):
-    video = Video.query.get(video_id)
+    video = Video.query.filter_by(id=video_id).first()
     if video:
         return render_template('play.html', video=video)
     return 'Video not found', 404
