@@ -25,18 +25,14 @@ def upload():
         title = request.form['title']
 
         if file and title:
-            # Generate a unique identifier for the video
             video_id = str(uuid.uuid4())
 
-            # Save the uploaded file with the generated video ID as the filename
             filename = secure_filename(file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
 
-            # Create a new Video object in the database
             video = Video(title=title, filename=filename)
 
-            # Commit changes to the database
             db.session.add(video)
             db.session.commit()
 
@@ -61,10 +57,8 @@ def search():
     query = request.args.get('query', '').strip()
     
     if not query:
-        # If the query is empty, retrieve all videos
         videos = Video.query.all()
     else:
-        # If the query is not empty, perform search
         videos = Video.query.filter(Video.title.ilike(f'%{query}%')).all()
 
     return render_template('search_results.html', videos=videos, query=query)
