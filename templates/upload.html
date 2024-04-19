@@ -8,7 +8,7 @@
 <body>
     <h1>Upload Video</h1>
     <form id="uploadForm" enctype="multipart/form-data">
-        <input type="text" name="title" placeholder="Title" required>
+        <input type="text" id="titleInput" name="title" placeholder="Title" required>
         <input type="file" name="video" required>
         <button type="submit">Upload</button>
     </form>
@@ -18,6 +18,10 @@
         $(document).ready(function () {
             $('#uploadForm').submit(function (e) {
                 e.preventDefault();
+                if ($('#titleInput').val().trim() === '') {
+                    alert('Please enter a title for the video.');
+                    return;
+                }
                 var formData = new FormData(this);
                 $.ajax({
                     url: '/upload',
@@ -34,5 +38,6 @@
             });
         });
     </script>
+    <a href='/'>Go back</a>
 </body>
 </html>

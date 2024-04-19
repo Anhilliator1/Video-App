@@ -7,10 +7,17 @@
 </head>
 <body>
     <h1>Search Results</h1>
+    {% if query %}
+        <p>Search Query: "{{ query }}"</p>
+    {% endif %}
     <ul>
-        {% for video in videos %}
-        <li><a href="{{ url_for('play', video_id=video.id) }}">{{ video.title }}</a></li>
-        {% endfor %}
+        {% if videos %}
+            {% for video in videos %}
+            <li><a href="{{ url_for('play', video_id=video.id) }}">{{ video.title }}</a></li>
+            {% endfor %}
+        {% else %}
+            <li>No Videos Found</li>
+        {% endif %}
     </ul>
 </body>
 </html>

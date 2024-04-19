@@ -6,9 +6,12 @@
     <title>Video App</title>
 </head>
 <body>
-    <h1>Welcome to the Video App</h1>
+    <h1>Video App</h1>
     <div>
-        <a href="/search">Search Videos</a>
+        <form id="searchForm" action="/search" method="GET">
+            <input type="text" name="query" placeholder="Search videos by title">
+            <button type="submit">Search</button>
+        </form>
         <a href="/upload">Upload Video</a>
     </div>
 </body>

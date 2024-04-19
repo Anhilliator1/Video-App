@@ -37,9 +37,17 @@ def video(video_id):
 
 @app.route('/search', methods=['GET'])
 def search():
-    query = request.args.get('query', '')
-    videos = Video.query.filter(Video.title.ilike(f'%{query}%')).all()
-    return render_template('search_results.html', videos=videos)
+    query = request.args.get('query', '').strip()
+    
+    if not query:
+        # If the query is empty, retrieve all videos
+        videos = Video.query.all()
+    else:
+        # If the query is not empty, perform search
+        videos = Video.query.filter(Video.title.ilike(f'%{query}%')).all()
+
+    return render_template('search_results.html', videos=videos, query=query)
+
 
 if __name__ == '__main__':
     with app.app_context():
